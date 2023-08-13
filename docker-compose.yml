@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+  backend:
+    container_name: docker-backend
+    build:
+      context: .
+    environment:
+      - PORT=3001
+    ports:
+      - 4000:3001
+    networks:
+      - docker-net
+    restart: always
+    depends_on:
+      - postgre
+
+  postgre:
+    container_name: docker-pg
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - 5433:5432
+    networks:
+      - docker-net
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+networks:
+  docker-net:
+    driver: bridge
